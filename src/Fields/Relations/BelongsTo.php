@@ -73,10 +73,26 @@ class BelongsTo extends ToOne implements FillableToOne
             throw new LogicException('Expecting an Eloquent belongs-to relation.');
         }
 
-        if ($related = $this->find($identifier)) {
-            $relation->associate($related);
-        } else {
-            $relation->disassociate();
+
+        $method = $identifier['method'] ?? null;
+        $related = $this->find($identifier);
+
+        switch ($method) {
+            case 'destroy':
+                if ($related) {
+                    $relation->delete();
+                }
+                break;
+            case 'disassociate':
+                $relation->disassociate();
+                break;
+            case 'update':
+            default:
+                if ($related) {
+                    $relation->associate($related);
+                } else {
+                    $relation->disassociate();
+                }
         }
     }
 
