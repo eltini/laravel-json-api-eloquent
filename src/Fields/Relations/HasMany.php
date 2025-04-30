@@ -46,7 +46,7 @@ class HasMany extends ToMany implements FillableToMany
      * @param string|null $relation
      * @return HasMany
      */
-    public static function make(string $fieldName, string $relation = null): HasMany
+    public static function make(string $fieldName, ?string $relation = null): HasMany
     {
         return new self($fieldName, $relation);
     }
@@ -159,7 +159,7 @@ class HasMany extends ToMany implements FillableToMany
     {
         $name = $this->relationName();
 
-        assert(method_exists($model, $name), sprintf(
+        assert(method_exists($model, $name) || $model->relationResolver($model::class, $name), sprintf(
             'Expecting method %s to exist on model %s.',
             $name,
             $model::class,

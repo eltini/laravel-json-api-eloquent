@@ -11,14 +11,16 @@ declare(strict_types=1);
 
 namespace LaravelJsonApi\Eloquent\Filters;
 
-use LaravelJsonApi\Core\Support\Str;
+use Illuminate\Support\Traits\Conditionable;
 use LaravelJsonApi\Eloquent\Contracts\Filter;
 
-class Scope implements Filter
+class WhereAll implements Filter
 {
-
     use Concerns\DeserializesValue;
+    use Concerns\HasColumns;
+    use Concerns\HasOperator;
     use Concerns\IsSingular;
+    use Conditionable;
 
     /**
      * @var string
@@ -26,32 +28,28 @@ class Scope implements Filter
     private string $name;
 
     /**
-     * @var string
-     */
-    private string $scope;
-
-    /**
-     * Create a new scope filter.
+     * Create a new filter.
      *
      * @param string $name
-     * @param string|null $scope
+     * @param array<string>|null $columns
      * @return static
      */
-    public static function make(string $name, ?string $scope = null)
+    public static function make(string $name, ?array $columns = null): static
     {
-        return new static($name, $scope);
+        return new static($name, $columns);
     }
 
     /**
-     * Scope constructor.
+     * WhereAll constructor.
      *
      * @param string $name
-     * @param string|null $scope
-     */
-    public function __construct(string $name, ?string $scope = null)
+     * @param array<string>|null $columns
+    */
+    public function __construct(string $name, ?array $columns = null)
     {
         $this->name = $name;
-        $this->scope = $scope ?: $this->guessScope();
+        $this->columns = $columns ?? [];
+        $this->operator = '=';
     }
 
     /**
@@ -67,16 +65,10 @@ class Scope implements Filter
      */
     public function apply($query, $value)
     {
-        return $query->{$this->scope}(
+        return $query->whereAll(
+            $this->qualifiedColumns($query->getModel()),
+            $this->operator(),
             $this->deserialize($value)
         );
-    }
-
-    /**
-     * @return string
-     */
-    private function guessScope(): string
-    {
-        return Str::camel($this->name);
     }
 }

@@ -44,7 +44,7 @@ class HasOne extends ToOne implements FillableToOne
      * @param string|null $relation
      * @return HasOne
      */
-    public static function make(string $fieldName, string $relation = null): HasOne
+    public static function make(string $fieldName, ?string $relation = null): HasOne
     {
         return new self($fieldName, $relation);
     }
@@ -100,7 +100,7 @@ class HasOne extends ToOne implements FillableToOne
     {
         $name = $this->relationName();
 
-        assert(method_exists($model, $name), sprintf(
+        assert(method_exists($model, $name) || $model->relationResolver($model::class, $name), sprintf(
             'Expecting method %s to exist on model %s.',
             $name,
             $model::class,

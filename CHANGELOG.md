@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file. This projec
 
 ## Unreleased
 
+## [4.5.0] - 2025-02-24
+
+### Added
+
+- Package now supports Laravel 11 and 12.
+
+## [4.4.0] - 2024-11-30
+
+### Added
+
+- Allow `laravel-json-api/core` v4 and v5.
+
+### Fixed
+
+- Remove deprecation notices in PHP 8.4.
+
+## [4.3.1] - 2024-10-31
+
+### Fixed
+
+- [#41](https://github.com/laravel-json-api/eloquent/pull/41) Handle key column not existing in cursor paginator.
+
+## [4.3.0] - 2024-10-13
+
+### Added
+
+- [#38](https://github.com/laravel-json-api/eloquent/pull/38) Added `WhereAll` and `WhereAny` filters.
+
+### Fixed
+
+- [#39](https://github.com/laravel-json-api/eloquent/issues/39) Fixed a bug in the eager loader iterator where include
+  paths starting with the same word were incorrectly removed. E.g. `car` and `carOwner` would result in just `carOwner`.
+
+## [4.2.0] - 2024-08-26
+
+### Added
+
+- [#37](https://github.com/laravel-json-api/eloquent/pull/37) Add Eloquent cursor pagination implementation.
+
+## [4.1.0] - 2024-06-26
+
+### Added
+
+- [#36](https://github.com/laravel-json-api/eloquent/pull/36) Support Eloquent dynamic relationships.
+
 ## [4.0.0] - 2024-03-12
 
 ### Changed

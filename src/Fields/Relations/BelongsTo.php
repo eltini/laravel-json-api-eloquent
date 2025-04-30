@@ -26,7 +26,7 @@ class BelongsTo extends ToOne implements FillableToOne
      * @param string|null $relation
      * @return static
      */
-    public static function make(string $fieldName, string $relation = null): BelongsTo
+    public static function make(string $fieldName, ?string $relation = null): BelongsTo
     {
         return new static($fieldName, $relation);
     }
@@ -37,7 +37,7 @@ class BelongsTo extends ToOne implements FillableToOne
      * @param string $fieldName
      * @param string|null $relation
      */
-    public function __construct(string $fieldName, string $relation = null)
+    public function __construct(string $fieldName, ?string $relation = null)
     {
         parent::__construct($fieldName, $relation);
         $this->mustValidate();
@@ -58,7 +58,7 @@ class BelongsTo extends ToOne implements FillableToOne
     {
         $name = $this->relationName();
 
-        assert(method_exists($model, $name), sprintf(
+        assert(method_exists($model, $name)  || $model->relationResolver($model::class, $name), sprintf(
             'Expecting method %s to exist on model %s.',
             $name,
             $model::class,
